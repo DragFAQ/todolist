@@ -1,2 +1,0 @@
-# todolist
-JavaRush Test Task
