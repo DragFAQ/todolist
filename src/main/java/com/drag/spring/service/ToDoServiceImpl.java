@@ -3,8 +3,8 @@ package com.drag.spring.service;
 import com.drag.spring.dao.ToDoDAO;
 import com.drag.spring.model.ToDo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

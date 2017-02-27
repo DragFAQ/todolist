@@ -40,7 +40,7 @@
         <beans:property name="dataSource" ref="dataSource" />
         <beans:property name="annotatedClasses">
             <beans:list>
-                <beans:value>com.journaldev.spring.model.ToDo</beans:value>
+                <beans:value>com.drag.spring.model.ToDo</beans:value>
             </beans:list>
         </beans:property>
         <beans:property name="hibernateProperties">
