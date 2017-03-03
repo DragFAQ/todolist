@@ -66,4 +66,14 @@ public class ToDoDAOImpl implements ToDoDAO {
 
         return list;
     }
+
+    @Override
+    public void setDone(int id) {
+        Session session = this.sessionFactory.getCurrentSession();
+        ToDo toDo = (ToDo) session.load(ToDo.class, new Integer(id));
+        if (toDo != null) {
+            toDo.setDone(!toDo.isDone());
+            session.update(toDo);
+        }
+    }
 }

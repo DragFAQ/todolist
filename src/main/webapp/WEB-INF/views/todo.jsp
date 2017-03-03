@@ -51,11 +51,11 @@
                 </form:label>
             </td>
             <td>
-                <form:input path="description" />
+                <form:textarea path="description" />
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <td colspan="3">
                 <c:if test="${!empty todo.title}">
                     <input type="submit"
                            value="<spring:message text="Edit TODO"/>" />
@@ -73,9 +73,10 @@
 <c:if test="${!empty listToDos}">
     <table class="tg">
         <tr>
-            <th width="80">TODO ID</th>
-            <th width="120">TODO Title</th>
-            <th width="120">TODO Description</th>
+            <th width="60">ID</th>
+            <th width="120">Title</th>
+            <th width="120">Description</th>
+            <th width="60">Done</th>
             <th width="60">Edit</th>
             <th width="60">Delete</th>
         </tr>
@@ -83,7 +84,15 @@
             <tr>
                 <td>${todo.id}</td>
                 <td>${todo.title}</td>
-                <td>${todo.description}</td>
+                <td><pre>${todo.description}</pre></td>
+                <td><c:choose>
+                    <c:when test="${todo.done}">
+                        <a href="<c:url value='/mark-done/${todo.id}' />" ><img src="/resources/check.jpg" /></a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="<c:url value='/mark-done/${todo.id}' />" ><img src="/resources/uncheck.jpg" /></a>
+                    </c:otherwise>
+                </c:choose></td>
                 <td><a href="<c:url value='/edit/${todo.id}' />" >Edit</a></td>
                 <td><a href="<c:url value='/remove/${todo.id}' />" >Delete</a></td>
             </tr>

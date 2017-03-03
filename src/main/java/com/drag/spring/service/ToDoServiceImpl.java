@@ -45,4 +45,10 @@ public class ToDoServiceImpl implements ToDoService {
     public List<ToDo> listToDosByStatus(int status) {
         return this.toDoDAO.listToDosByStatus(status);
     }
+
+    @Override
+    @Transactional
+    public void setDone(int id) {
+        this.toDoDAO.setDone(id);
+    }
 }

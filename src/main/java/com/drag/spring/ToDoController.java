@@ -53,4 +53,11 @@ public class ToDoController {
 
         return "todo";
     }
+
+    @RequestMapping("/mark-done/{id}")
+    public String setDone(@PathVariable("id") int id) {
+        this.toDoService.setDone(id);
+
+        return "redirect:/todolist";
+    }
 }

@@ -10,4 +10,5 @@ public interface ToDoDAO {
     public void removeToDo(int id);
     public ToDo getToDoById(int id);
     public List<ToDo> listToDosByStatus(int status);
+    public void setDone(int id);
 }
