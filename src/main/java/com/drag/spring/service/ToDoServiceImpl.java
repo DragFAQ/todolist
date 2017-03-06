@@ -42,13 +42,18 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     @Transactional
-    public List<ToDo> listToDosByStatus(int status) {
-        return this.toDoDAO.listToDosByStatus(status);
+    public List<ToDo> listToDosByStatus(Integer offset, Integer maxResults) {
+        return this.toDoDAO.listToDosByStatus(offset, maxResults);
     }
 
     @Override
     @Transactional
     public void setDone(int id) {
         this.toDoDAO.setDone(id);
+    }
+
+    @Override
+    public Long count() {
+        return this.toDoDAO.count();
     }
 }

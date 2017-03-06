@@ -9,6 +9,7 @@ public interface ToDoService {
     public void updateToDo(ToDo toDo);
     public void removeToDo(int id);
     public ToDo getToDoById(int id);
-    public List<ToDo> listToDosByStatus(int status);
+    public List<ToDo> listToDosByStatus(Integer offset, Integer maxResults);
     public void setDone(int id);
+    public Long count();
 }

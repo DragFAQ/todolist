@@ -22,9 +22,12 @@ public class ToDoController {
     }
 
     @RequestMapping(value = "/todolist", method = RequestMethod.GET)
-    public String listToDos(Model model) {
+    public String listToDos(Model model, Integer offset, Integer maxResults) {
         model.addAttribute("todo", new ToDo());
-        model.addAttribute("listToDos", this.toDoService.listToDosByStatus(-1));
+        model.addAttribute("listToDos", this.toDoService.listToDosByStatus(offset, maxResults));
+        model.addAttribute("count", toDoService.count());
+        model.addAttribute("offset", offset);
+
         return "todo";
     }
 
@@ -47,9 +50,11 @@ public class ToDoController {
     }
 
     @RequestMapping("/edit/{id}")
-    public String editToDo(@PathVariable("id") int id, Model model) {
+    public String editToDo(@PathVariable("id") int id, Model model, Integer offset, Integer maxResults) {
         model.addAttribute("todo", this.toDoService.getToDoById(id));
-        model.addAttribute("listToDos", this.toDoService.listToDosByStatus(-1));
+        model.addAttribute("listToDos", this.toDoService.listToDosByStatus(offset, maxResults));
+        model.addAttribute("count", toDoService.count());
+        model.addAttribute("offset", offset);
 
         return "todo";
     }

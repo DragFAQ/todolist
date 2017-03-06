@@ -4,9 +4,11 @@ import com.drag.spring.model.ToDo;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -54,13 +56,14 @@ public class ToDoDAOImpl implements ToDoDAO {
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional
     @Override
-    public List<ToDo> listToDosByStatus(int status) {
-        Session session = this.sessionFactory.getCurrentSession();
-        String filter = "from ToDo";
-        if (status == 0 || status == 1)
-            filter += " WHERE isDone = " + status;
-        List<ToDo> list = session.createQuery(filter).list();
+    public List<ToDo> listToDosByStatus(Integer offset, Integer maxResults) {
+        List<ToDo> list = sessionFactory.openSession()
+                .createCriteria(ToDo.class)
+                .setFirstResult(offset != null ? offset : 0)
+                .setMaxResults(maxResults != null ? maxResults : 10)
+                .list();
         for (ToDo t : list)
             logger.info("TODO List::" + t);
 
@@ -75,5 +78,13 @@ public class ToDoDAOImpl implements ToDoDAO {
             toDo.setDone(!toDo.isDone());
             session.update(toDo);
         }
+    }
+
+    @Override
+    public Long count() {
+        return (Long) sessionFactory.openSession()
+                .createCriteria(ToDo.class)
+                .setProjection(Projections.rowCount())
+                .uniqueResult();
     }
 }
