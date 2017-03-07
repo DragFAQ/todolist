@@ -6,8 +6,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -16,9 +22,15 @@ public class ToDoDAOImpl implements ToDoDAO {
     private static final Logger logger = LoggerFactory.getLogger(ToDoDAOImpl.class);
 
     private SessionFactory sessionFactory;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Autowired
+    public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) throws DataAccessException {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
@@ -56,11 +68,13 @@ public class ToDoDAOImpl implements ToDoDAO {
     @SuppressWarnings("unchecked")
     @Override
     public List<ToDo> listToDosByStatus(int status) {
-        Session session = this.sessionFactory.getCurrentSession();
+/*        Session session = this.sessionFactory.getCurrentSession();
         String filter = "from ToDo";
         if (status == 0 || status == 1)
-            filter += " WHERE isDone = " + status;
-        List<ToDo> list = session.createQuery(filter).list();
+            filter += " WHERE isDone = " + status;*/
+        String sql = "select id, title, description, isDone from todolist";
+
+        List<ToDo> list = namedParameterJdbcTemplate.query(sql, new ToDoMapper());
         for (ToDo t : list)
             logger.info("TODO List::" + t);
 
@@ -74,6 +88,20 @@ public class ToDoDAOImpl implements ToDoDAO {
         if (toDo != null) {
             toDo.setDone(!toDo.isDone());
             session.update(toDo);
+        }
+    }
+
+    private static final class ToDoMapper implements RowMapper<ToDo> {
+
+        @Override
+        public ToDo mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            ToDo toDo = new ToDo();
+            toDo.setId(resultSet.getInt("id"));
+            toDo.setTitle(resultSet.getString("title"));
+            toDo.setDescription(resultSet.getString("description"));
+            toDo.setDone(resultSet.getInt("isDone") == 1);
+
+            return toDo;
         }
     }
 }

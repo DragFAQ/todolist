@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ToDoController {
@@ -21,13 +22,22 @@ public class ToDoController {
         this.toDoService = toDoService;
     }
 
+
     @RequestMapping(value = "/todolist", method = RequestMethod.GET)
+    public ModelAndView list() {
+        ModelAndView modelAndView = new ModelAndView("todolist");
+        modelAndView.addObject("todolist", toDoService.listToDosByStatus(-1));
+
+        return modelAndView;
+    }
+
+/*    @RequestMapping(value = "/todolist", method = RequestMethod.GET)
     public String listToDos(Model model) {
         model.addAttribute("todo", new ToDo());
         model.addAttribute("listToDos", this.toDoService.listToDosByStatus(-1));
         return "todo";
     }
-
+*/
     @RequestMapping(value = "/todo/add", method = RequestMethod.POST)
     public String addToDo(@ModelAttribute("todo") ToDo toDo) {
         if (toDo.getId() == 0) {
