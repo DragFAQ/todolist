@@ -26,6 +26,7 @@ public class ToDoController {
     @RequestMapping(value = "/todolist", method = RequestMethod.GET)
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("todolist");
+        modelAndView.addObject("todo", new ToDo());
         modelAndView.addObject("todolist", toDoService.listToDosByStatus(-1));
 
         return modelAndView;
@@ -57,11 +58,12 @@ public class ToDoController {
     }
 
     @RequestMapping("/edit/{id}")
-    public String editToDo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("todo", this.toDoService.getToDoById(id));
-        model.addAttribute("listToDos", this.toDoService.listToDosByStatus(-1));
+    public ModelAndView editToDo(@PathVariable("id") int id, Model model) {
+        ModelAndView modelAndView = new ModelAndView("todolist");
+        modelAndView.addObject("todo", this.toDoService.getToDoById(id));
+        modelAndView.addObject("todolist", this.toDoService.listToDosByStatus(-1));
 
-        return "todo";
+        return modelAndView;
     }
 
     @RequestMapping("/mark-done/{id}")

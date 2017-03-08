@@ -71,8 +71,8 @@ public class ToDoDAOImpl implements ToDoDAO {
 /*        Session session = this.sessionFactory.getCurrentSession();
         String filter = "from ToDo";
         if (status == 0 || status == 1)
-            filter += " WHERE isDone = " + status;*/
-        String sql = "select id, title, description, isDone from todolist";
+            filter += " WHERE isIsdone = " + status;*/
+        String sql = "select id, title, description, done from todolist";
 
         List<ToDo> list = namedParameterJdbcTemplate.query(sql, new ToDoMapper());
         for (ToDo t : list)
@@ -99,7 +99,7 @@ public class ToDoDAOImpl implements ToDoDAO {
             toDo.setId(resultSet.getInt("id"));
             toDo.setTitle(resultSet.getString("title"));
             toDo.setDescription(resultSet.getString("description"));
-            toDo.setDone(resultSet.getInt("isDone") == 1);
+            toDo.setDone(resultSet.getBoolean("done"));
 
             return toDo;
         }

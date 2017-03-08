@@ -1,5 +1,7 @@
 package com.drag.spring.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ public class ToDo {
 
     private String description;
 
-    private boolean isDone;
+    private boolean done;
 
     public int getId() {
         return id;
@@ -46,15 +48,15 @@ public class ToDo {
     }
 
     public boolean isDone() {
-        return isDone;
+        return done;
     }
 
     public void setDone(boolean done) {
-        isDone = done;
+        this.done = done;
     }
 
     @Override
     public String toString() {
-        return "id=" + id + ", title=" + title + ", isDone=" + isDone;
+        return "id=" + id + ", title=" + title + ", isdone=" + done;
     }
 }
