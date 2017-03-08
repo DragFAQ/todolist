@@ -23,11 +23,12 @@ public class ToDoController {
     }
 
 
-    @RequestMapping(value = "/todolist", method = RequestMethod.GET)
-    public ModelAndView list() {
+    @RequestMapping(value = "/todolist/{status}", method = RequestMethod.GET)
+    public ModelAndView list(@PathVariable int status) {
         ModelAndView modelAndView = new ModelAndView("todolist");
         modelAndView.addObject("todo", new ToDo());
-        modelAndView.addObject("todolist", toDoService.listToDosByStatus(-1));
+        modelAndView.addObject("status", status);
+        modelAndView.addObject("todolist", toDoService.listToDosByStatus(status));
 
         return modelAndView;
     }
@@ -39,37 +40,38 @@ public class ToDoController {
         return "todo";
     }
 */
-    @RequestMapping(value = "/todo/add", method = RequestMethod.POST)
-    public String addToDo(@ModelAttribute("todo") ToDo toDo) {
+    @RequestMapping(value = "/todo/add/{status}", method = RequestMethod.POST)
+    public String addToDo(@ModelAttribute("todo") ToDo toDo, @PathVariable int status) {
         if (toDo.getId() == 0) {
             this.toDoService.addToDo(toDo);
         } else {
             this.toDoService.updateToDo(toDo);
         }
 
-        return "redirect:/todolist";
+        return "redirect:/todolist/" + status;
     }
 
-    @RequestMapping("/remove/{id}")
-    public String removeToDo(@PathVariable("id") int id) {
+    @RequestMapping("/remove/{status}/{id}")
+    public String removeToDo(@PathVariable int status, @PathVariable("id") int id) {
         this.toDoService.removeToDo(id);
 
-        return "redirect:/todolist";
+        return "redirect:/todolist/" + status;
     }
 
-    @RequestMapping("/edit/{id}")
-    public ModelAndView editToDo(@PathVariable("id") int id, Model model) {
+    @RequestMapping("/edit/{status}/{id}")
+    public ModelAndView editToDo(@PathVariable int status, @PathVariable("id") int id, Model model) {
         ModelAndView modelAndView = new ModelAndView("todolist");
         modelAndView.addObject("todo", this.toDoService.getToDoById(id));
-        modelAndView.addObject("todolist", this.toDoService.listToDosByStatus(-1));
+        modelAndView.addObject("status", status);
+        modelAndView.addObject("todolist", this.toDoService.listToDosByStatus(status));
 
         return modelAndView;
     }
 
-    @RequestMapping("/mark-done/{id}")
-    public String setDone(@PathVariable("id") int id) {
+    @RequestMapping("/mark-done/{status}/{id}")
+    public String setDone(@PathVariable int status, @PathVariable("id") int id) {
         this.toDoService.setDone(id);
 
-        return "redirect:/todolist";
+        return "redirect:/todolist/" + status;
     }
 }

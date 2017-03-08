@@ -73,6 +73,8 @@ public class ToDoDAOImpl implements ToDoDAO {
         if (status == 0 || status == 1)
             filter += " WHERE isIsdone = " + status;*/
         String sql = "select id, title, description, done from todolist";
+        if (status == 0 || status == 1)
+            sql += " WHERE done = " + status;
 
         List<ToDo> list = namedParameterJdbcTemplate.query(sql, new ToDoMapper());
         for (ToDo t : list)

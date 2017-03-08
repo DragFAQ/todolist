@@ -27,7 +27,7 @@
     Add TODO
 </h1>
 
-<c:url var="addAction" value="/todo/add"></c:url>
+<c:url var="addAction" value="/todo/add/${status}"></c:url>
 
 <form:form action="${addAction}" commandName="todo">
     <table>
@@ -79,40 +79,59 @@
     </table>
 </form:form>
 <br>
-<spring:url value="/todolist" var="listURL"/>
-<display:table name="todolist" requestURI="${listURL}" pagesize="5" class="table" id="list">
-    <display:column property="id" title="ID"/>
-    <display:column property="title" title="Title"/>
-    <display:column title="Description">
-        <pre>${list.description}</pre>
-    </display:column>
-    <display:column title="Done">
-        <a href="/mark-done/${list.id}">
+<ul class="nav nav-tabs">
+    <li role="presentation"
+    <c:if test="${status == -1}">
+        class="active"
+    </c:if>
+    ><a href="/todolist/-1">All TODOs</a></li>
+    <li role="presentation"
+    <c:if test="${status == 0}">
+        class="active"
+    </c:if>
+    ><a href="/todolist/0">Not done TODOs</a></li>
+    <li role="presentation"
+    <c:if test="${status == 1}">
+        class="active"
+    </c:if>
+    ><a href="/todolist/1">Done TODOs</a></li>
+</ul>
+<spring:url value="/todolist/${status}" var="listURL"/>
+<div class="panel panel-default">
+    <div class="panel-heading">TODO List</div>
+    <display:table name="todolist" requestURI="${listURL}" pagesize="5" class="table" id="list">
+        <display:column property="id" title="ID"/>
+        <display:column property="title" title="Title"/>
+        <display:column title="Description">
+            <pre>${list.description}</pre>
+        </display:column>
+        <display:column title="Done">
+            <a href="/mark-done/${status}/${list.id}">
+                <button type="button" class="btn btn-default" aria-label="Edit">
+                    <c:choose>
+                        <c:when test="${list.done}">
+                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+                        </c:otherwise>
+                    </c:choose>
+                </button>
+            </a>
+        </display:column>
+        <display:column><a href="/edit/${status}/${list.id}">
             <button type="button" class="btn btn-default" aria-label="Edit">
-                <c:choose>
-                    <c:when test="${list.done}">
-                        <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                    </c:when>
-                    <c:otherwise>
-                        <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-                    </c:otherwise>
-                </c:choose>
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
             </button>
         </a>
-    </display:column>
-    <display:column><a href="/edit/${list.id}">
-        <button type="button" class="btn btn-default" aria-label="Edit">
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-        </button>
-    </a>
-        <a href="/remove/${list.id}">
-            <button type="button" class="btn btn-default" aria-label="Edit">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            </button>
-        </a>
-    </display:column>
+            <a href="/remove/${status}/${list.id}">
+                <button type="button" class="btn btn-default" aria-label="Edit">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </a>
+        </display:column>
 
-</display:table>
-
+    </display:table>
+</div>
 </body>
 </html>
