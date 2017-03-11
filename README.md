@@ -2,6 +2,7 @@
 JavaRush Test Task
 
 To use this app, you need to:
+
 1. Install MySQL and configure connection to it in /webapp/WEB-INF/spring/appServlet/servlet-context.xml.
 Now it configured for:
 DBName=test
