@@ -68,10 +68,6 @@ public class ToDoDAOImpl implements ToDoDAO {
     @SuppressWarnings("unchecked")
     @Override
     public List<ToDo> listToDosByStatus(int status) {
-/*        Session session = this.sessionFactory.getCurrentSession();
-        String filter = "from ToDo";
-        if (status == 0 || status == 1)
-            filter += " WHERE isIsdone = " + status;*/
         String sql = "select id, title, description, done from todolist";
         if (status == 0 || status == 1)
             sql += " WHERE done = " + status;

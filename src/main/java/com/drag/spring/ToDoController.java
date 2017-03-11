@@ -33,13 +33,6 @@ public class ToDoController {
         return modelAndView;
     }
 
-/*    @RequestMapping(value = "/todolist", method = RequestMethod.GET)
-    public String listToDos(Model model) {
-        model.addAttribute("todo", new ToDo());
-        model.addAttribute("listToDos", this.toDoService.listToDosByStatus(-1));
-        return "todo";
-    }
-*/
     @RequestMapping(value = "/todo/add/{status}", method = RequestMethod.POST)
     public String addToDo(@ModelAttribute("todo") ToDo toDo, @PathVariable int status) {
         if (toDo.getId() == 0) {
