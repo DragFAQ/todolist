@@ -1,3 +1,5 @@
+drop table if exists todolist;
+
 CREATE TABLE todolist
 (
     id INT(8) unsigned PRIMARY KEY NOT NULL AUTO_INCREMENT,
